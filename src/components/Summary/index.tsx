@@ -2,13 +2,13 @@ import { Container, SummaryBox } from "./styles"
 import entryImg from '../../assets/entry.svg'
 import exitsImg from '../../assets/exits.svg'
 import currencyImg from '../../assets/currency.svg'
-import { useContext } from "react"
-import { TransactionsContext } from "../../TransactionsContext"
+
+import {  useTransaction } from "../../hooks/useTransactions"
 import { DepositType } from "../../types"
 
 export const Summary = () => {
 
-    const {transactions} = useContext(TransactionsContext)
+    const {transactions} = useTransaction()
 
     const summary = transactions.reduce((acc,transaction) => {
 
