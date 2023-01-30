@@ -1,8 +1,10 @@
+import { useTransaction } from "../../hooks/useTransactions"
 import { DepositType, TransactionsTableRowProps } from "../../types/"
 import { TableRow } from "./style"
 
 export const TransactionsTableRow = (props: TransactionsTableRowProps) => {
     const {transaction} = props
+    const {deleteTransaction} = useTransaction()
     return (
         <TableRow>
             <td>{transaction.title}</td>
@@ -16,6 +18,9 @@ export const TransactionsTableRow = (props: TransactionsTableRowProps) => {
             <td>{
                 new Intl.DateTimeFormat('pt-BR').format(new Date(transaction.createdAt))
             }</td>
+            <td className="action">
+                <button onClick={() => deleteTransaction(transaction.id)}>X</button>
+            </td>
         </TableRow>
     )
 }

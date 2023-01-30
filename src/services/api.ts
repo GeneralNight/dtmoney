@@ -24,9 +24,14 @@ export const api = {
   getTransactions() {
     return axiosInstance.get('/transactions')
   },
-  createTransactions(body: TransactionInput): Promise<{transaction:Transaction}> {
+  async createTransactions(body: TransactionInput): Promise<{transaction:Transaction}> {
     return axiosInstance.post('/transactions', body).then(res=> {
       return res.data
     })
-  }  
+  },
+  async deleteTransaction(transactionId:number) {
+    return axiosInstance.delete(`/transactions/${transactionId}`).then(res=> {
+      return res.data
+    })
+  }
 };

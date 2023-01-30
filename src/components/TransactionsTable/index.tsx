@@ -1,14 +1,16 @@
 
 import { useTransaction } from "../../hooks/useTransactions"
+import { ModalDeleteTransaction } from "../ModalDeleteTransaction"
 import { TransactionsTableRow } from "../TransactionsTableRow"
 import { Container } from "./styles"
 
 export const TransactionsTable = () => {
 
-    const {transactions} = useTransaction()
+    const {transactions,deleteTransaction,transactionToDelete} = useTransaction()
 
     return (
         <Container>
+            <ModalDeleteTransaction isOpen={transactionToDelete!==undefined} closeModal={()=>deleteTransaction(-1)}/>
             <table>
                 <thead>
                     <tr>

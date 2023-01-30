@@ -44,6 +44,18 @@ createServer({
 
       return schema.create('transaction',data)
     })
+
+    this.delete('/transactions/:id', (schema, request) => {
+      
+      const transaction = schema.find('transaction',request.params.id)
+      if(transaction) {
+        transaction.destroy()
+        return true
+      }
+
+      return false
+      
+    })
   }
 })
 
