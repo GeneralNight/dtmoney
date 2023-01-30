@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { Transaction, TransactionInput } from '../types';
 
 const url = 'http://localhost:3000/api'
 
@@ -23,7 +24,9 @@ export const api = {
   getTransactions() {
     return axiosInstance.get('/transactions')
   },
-  createTransactions(body: any) {
-    return axiosInstance.post('/transactions', body)
+  createTransactions(body: TransactionInput): Promise<{transaction:Transaction}> {
+    return axiosInstance.post('/transactions', body).then(res=> {
+      return res.data
+    })
   }  
 };

@@ -1,4 +1,4 @@
-import { TransactionsTableRowProps } from "../../types/"
+import { DepositType, TransactionsTableRowProps } from "../../types/"
 import { TableRow } from "./style"
 
 export const TransactionsTableRow = (props: TransactionsTableRowProps) => {
@@ -9,8 +9,8 @@ export const TransactionsTableRow = (props: TransactionsTableRowProps) => {
             <td className={transaction.type}>{
                 new Intl.NumberFormat('pt-BR', {
                     style: 'currency',
-                    currency: 'BRL'
-                }).format(transaction.value)
+                    currency: 'BRL',
+                }).format(transaction.type === DepositType.DEPOSIT ? transaction.value : transaction.value * -1)
             }</td>
             <td>{transaction.category}</td>
             <td>{

@@ -1,11 +1,14 @@
+import { FormEvent, useContext, useState } from "react";
 import ReactModal from "react-modal"
-import { Container, RadioBox, TransactionTypeBox } from "./style";
-import { FormEvent, useState } from "react";
+import { TransactionsContext } from "../../TransactionsContext";
 
 import closeImg from '../../assets/close.svg'
 import entryImg from '../../assets/entry.svg'
 import exitsImg from '../../assets/exits.svg'
-import { api } from "../../services/api";
+
+
+import { Container, RadioBox, TransactionTypeBox } from "./style";
+import { DepositType, TransactionInput } from "../../types";
 
 type NewTransactionModalProps = {
     isOpen: boolean;
@@ -14,22 +17,38 @@ type NewTransactionModalProps = {
 }
 
 export const NewTransactionModal = ({isOpen,onRequestClose}:NewTransactionModalProps) => {
+    const {createTransaction} = useContext(TransactionsContext)
+
     const [title,setTitle] = useState('')
     const [value,setValue] = useState(0)
     const [category,setCategory] = useState('')
-    const [type,setType] = useState<'deposit'|'withdraw'>('deposit')
+    const [type,setType] = useState<DepositType>(DepositType.DEPOSIT)
 
-    function handleCreateNewTransaction(event:FormEvent) {
+    const handleCreateNewTransaction = async (event:FormEvent) => {
         event.preventDefault();
-        const data = {
+
+        const data: TransactionInput = {
             title,
             value,
             type,
             category
         }
 
-        api.createTransactions(data)
+        
+        await createTransaction(data)
+        onRequestClose()
+        cleanTransaction()       
+        
     }
+
+    const cleanTransaction = () => {
+        setTitle('')
+        setValue(0)
+        setCategory('')
+        setType(DepositType.DEPOSIT)
+    }
+
+
 
     return (
         <ReactModal
@@ -50,7 +69,7 @@ export const NewTransactionModal = ({isOpen,onRequestClose}:NewTransactionModalP
                 <TransactionTypeBox>
                     <RadioBox
                         type="button"
-                        onClick={()=>setType('deposit')}
+                        onClick={()=>setType(DepositType.DEPOSIT)}
                         isActive={type==='deposit'}
                         activeColor='#12A45430'
                     >
@@ -62,7 +81,7 @@ export const NewTransactionModal = ({isOpen,onRequestClose}:NewTransactionModalP
                     <RadioBox
                         type="button"
                         isActive={type==='withdraw'}
-                        onClick={()=>setType('withdraw')}
+                        onClick={()=>setType(DepositType.WITHDRAW)}
                         activeColor='#E52E4D30'
                     >
                         <img src={exitsImg} alt="withdraw" />
