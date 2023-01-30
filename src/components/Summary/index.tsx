@@ -48,7 +48,7 @@ export const Summary = () => {
                     <p>Saídas</p>
                     <img src={exitsImg} alt="Saídas" />
                 </header>
-                <strong>
+                <strong>-
                     {
                         new Intl.NumberFormat('pt-BR', {
                             style: 'currency',
