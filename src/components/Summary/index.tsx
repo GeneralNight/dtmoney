@@ -9,8 +9,24 @@ import { DepositType } from "../../types"
 export const Summary = () => {
 
     const {transactions} = useContext(TransactionsContext)
-    const entries = transactions.filter(t=>t.type===DepositType.DEPOSIT).reduce((counter,val) => counter + val.value,0)
-    const exits = transactions.filter(t=>t.type===DepositType.WITHDRAW).reduce((counter,val) => counter + val.value,0) * -1
+
+    const summary = transactions.reduce((acc,transaction) => {
+
+        if(transaction.type===DepositType.DEPOSIT) {
+            acc.deposit += transaction.value
+            acc.total += transaction.value
+        }else {
+            acc.withdraws += transaction.value
+            acc.total -= transaction.value
+        }
+
+        return acc
+    },{
+        deposit: 0,
+        withdraws: 0,
+        total: 0
+    })
+
     return (
         <Container>
             <SummaryBox>
@@ -23,7 +39,7 @@ export const Summary = () => {
                         new Intl.NumberFormat('pt-BR', {
                             style: 'currency',
                             currency: 'BRL',
-                        }).format(entries)
+                        }).format(summary.deposit)
                     }
                 </strong>
             </SummaryBox>
@@ -37,7 +53,7 @@ export const Summary = () => {
                         new Intl.NumberFormat('pt-BR', {
                             style: 'currency',
                             currency: 'BRL',
-                        }).format(exits)
+                        }).format(summary.withdraws)
                     }
                 </strong>
             </SummaryBox>
@@ -51,7 +67,7 @@ export const Summary = () => {
                         new Intl.NumberFormat('pt-BR', {
                             style: 'currency',
                             currency: 'BRL',
-                        }).format(entries + exits)
+                        }).format(summary.total)
                     }
                 </strong>
             </SummaryBox>
